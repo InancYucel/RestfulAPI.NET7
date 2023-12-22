@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\WonderfulGraphicCards_API.props" />
+</Project>
