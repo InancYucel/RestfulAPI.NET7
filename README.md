@@ -1,5 +1,5 @@
 ### RESTFUL API .NET 7
-## GET,POST,PUT,DELETE,PATCH methodS
+## GET,POST,PUT,DELETE,PATCH methods
 ![image](https://github.com/InancYucel/RestfulAPI.NET7/assets/48295407/7963b901-5e64-4a12-8f43-9907faac605c)
 ## Http status code standards
 ![image](https://github.com/InancYucel/RestfulAPI.NET7/assets/48295407/e747bfb3-3c6a-481d-8b62-580be4522627)
