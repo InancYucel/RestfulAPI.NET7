@@ -77,6 +77,7 @@ public class GraphicCardApiController : ControllerBase
             return BadRequest();
         }
 
+        //We fetch the matching record
         var graphicCard = GraphicCardStore.GraphicsCardList.FirstOrDefault(x => x.Id == id);
         if (graphicCard == null)
         {
@@ -84,7 +85,7 @@ public class GraphicCardApiController : ControllerBase
         }
 
         GraphicCardStore.GraphicsCardList.Remove(graphicCard);
-        return NoContent();
+        return NoContent(); //The transaction is successful but we do not give any feedback
     }
 
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -93,17 +94,18 @@ public class GraphicCardApiController : ControllerBase
     [HttpPut("{id:int}", Name = "UpdateGraphicCard")]
     public IActionResult UpdateGraphicCard(int id, [FromBody] GraphicCardDto graphicCardDto)
     {
-        if (graphicCardDto == null || id != graphicCardDto.Id)
+        if (graphicCardDto == null || id != graphicCardDto.Id) //
         {
-            return BadRequest();
+            return BadRequest(); //If the searched ID does not exist
         }
+        //We fetch the matching record
         var graphicCard = GraphicCardStore.GraphicsCardList.FirstOrDefault(x => x.Id == id);
         if (graphicCard != null)
         {
             graphicCard.Name = graphicCardDto.Name;
             graphicCard.CudaCores = graphicCardDto.CudaCores;
             graphicCard.CoreClockSpeed = graphicCardDto.CoreClockSpeed;
-            return NoContent();
+            return NoContent(); //The transaction is successful but we do not give any feedback
         }
         else
         {
@@ -130,7 +132,7 @@ public class GraphicCardApiController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        return NoContent();
+        return NoContent(); //The transaction is successful but we do not give any feedback
     }
     
     [HttpGet("GetIdByQuery")]
@@ -200,10 +202,8 @@ public class GraphicCardApiController : ControllerBase
         {
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
-        
         graphicCardDto.Id = GraphicCardStore.GraphicsCardList.OrderByDescending(a => a.Id).FirstOrDefault().Id + 1; //I want last Id + 1
         GraphicCardStore.GraphicsCardList.Add(graphicCardDto);
-
         return CreatedAtRoute("GetGraphicCard", new { id = graphicCardDto.Id }, graphicCardDto); //"GetGraphicCard" to know which resource was created
     }
     
@@ -249,7 +249,7 @@ public class GraphicCardApiController : ControllerBase
     [HttpDelete("DeleteGetGraphicCardByIdWithQuery")]
     public IActionResult DeleteGetGraphicCardByIdWithQuery([FromQuery] int id)
     {
-        if (id == 0)
+        if (id == 0) //There is no data with id 0
         {
             return BadRequest();
         }
@@ -334,6 +334,7 @@ public class GraphicCardApiController : ControllerBase
     [HttpGet("List/")]
     public ActionResult<GraphicCardDto> List([FromQuery] string name)
     {
+        //We bring all the data
         var graphicCard = GraphicCardStore.GraphicsCardList.FindAll(x => x.Name.Contains(name));
         if (graphicCard == null)
         {
@@ -346,7 +347,7 @@ public class GraphicCardApiController : ControllerBase
     public ActionResult<GraphicCardDto> Sorting([FromQuery] string sortBy)
     {
         var graphicCard = (IOrderedEnumerable<GraphicCardDto>?)null;
-        switch (sortBy)
+        switch (sortBy) //We sort from smallest to largest according to the string entered in the query.
         {
             case "Name":
                 graphicCard = GraphicCardStore.GraphicsCardList.OrderBy(p => p.Name);
